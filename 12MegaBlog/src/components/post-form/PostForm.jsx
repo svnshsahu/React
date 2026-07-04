@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 import {useCallback , useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import { Button ,Input , Select ,RTE} from '../index'
