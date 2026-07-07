@@ -2,7 +2,7 @@
 import {useCallback , useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import { Button ,Input , Select ,RTE} from '../index'
-import appwriteService from "../../appwrite/config"
+import appwriteService from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 //RTE use kaise karna hai , jb bhi use krna hai toh uska label ham yaha pr denge aur control le lenge RTE ka
@@ -23,21 +23,24 @@ function PostForm({post}) {
             } ,
             })
     const navigate = useNavigate();
-    const userData = useSelector(state => state.user.userData)
+    const userData = useSelector(state => state.auth.userData)
     
     const submit = async(data) => { //jaise hi submit hua toh dekhenge ki pehle se koi post hai ki nahi agar hai toh nayi file upload kr ke purani delete karenge
+        console.log("Submit clicked", data);
         if(post){
-           const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) :null
+        const file = data.image[0]
+            ? await appwriteService.uploadFile(data.image[0])
+            : null;
 
            if(file){
-                appwriteService.deleteFile(post.featuredImage);
+                await appwriteService.deleteFile(post.featuredImage);
            }
 
            //ab appwrite service mein .updatePost jo hamne banaya hai uske madad se post update kr denge
            //hame ek slug bhi pass krna hai wo toh id hi hai
            const dbPost = await appwriteService.updatePost(post.$id , {
             ...data, //sb value waise hi rahegi bs featured image hi override hogi
-            featuredImage : file? file.$id : undefined , })//sb chiz waise hi rhegi bas image update ho rhi 
+            featuredImage: file ? file.$id : post.featuredImage , })//sb chiz waise hi rhegi bas image update ho rhi 
 
             if(dbPost){
                 navigate(`/post/${dbPost.$id}`)
@@ -50,6 +53,7 @@ function PostForm({post}) {
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({
                     ...data ,
+                    featuredImage: file.$id, // Explicitly overwrite & inject the string ID
                     userId : userData.$id ,
                 })
                 if(dbPost){
@@ -67,8 +71,10 @@ function PostForm({post}) {
             return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]/g) //  / /g kr ke global match kr rhe hai aur / / ke andar [] jo likhenge wo pattern dhundhega aur [] iske aage ^ laga die toh matlab in sb ko chhod ke sbko - mein convert kr do /d mtlb digit /s mtlb spaces mtlb ! $ @ in sbko - 
-            .replace(/\s/g , '-') // ab isme sare spaces ko bhi - ..... ha ha  upar bhi direct \s hata dete toh wahi bat hoti
+            .replace(/[^\w\s]/g, "")
+            .replace(/\s+/g, "-")
+            // .replace(/[^\w\s]/g, "") //  / /g kr ke global match kr rhe hai aur / / ke andar [] jo likhenge wo pattern dhundhega aur [] iske aage ^ laga die toh matlab in sb ko chhod ke sbko - mein convert kr do /d mtlb digit /s mtlb spaces mtlb ! $ @ in sbko - 
+            // .replace(/\s/g , '-') // ab isme sare spaces ko bhi - ..... ha ha  upar bhi direct \s hata dete toh wahi bat hoti
         }else return ''
      } , [])
 
@@ -76,12 +82,16 @@ function PostForm({post}) {
         //actually mein jo bhi method aap yaha pr run krte usko aap ek subscription nam ke variable mein hold kr skte hai
         const subscription = watch( (value , {name}) => {
             if(name === 'title'){
-                setValue('slug' , slugTransform(value.title , {shouldValidate : true})) //value ek object hai yaha pr
+               
+                    setValue("slug", slugTransform(value.title), {
+                    shouldValidate: true
+                    })
+                //value ek object hai yaha pr
             }
         })
 
         return () => { //react use effect ke andar aapko ek call back milta hai usme aise likhte hai xyz.unsubscribe() for memory management 
-            subscription.unsuscribe()
+            subscription.unsubscribe()
         }
     } , [watch , slugTransform , setValue])
 

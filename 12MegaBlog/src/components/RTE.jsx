@@ -14,6 +14,7 @@ export default function RTE({name , control , label , defaultValue  = ""}) { //y
                     //jo bhi element aapko render karwana hai render se mera matlab hai agar input field ho toh input le lo editor ho toh editor le lo 
                     //agar aapko sirf editor export karna hai toh bohot aasan kaam hai
                     <Editor
+                    apiKey='9ucgrdrvawtv7fq3ooj70099malgjxgalk4w1vci34h2o0iv'
                     initialValue={defaultValue} // ki by default isme kya hai
                     init={ //initialize hote hi aap iske andar kya kya values chahte hai
                         {   initialValue : defaultValue ,

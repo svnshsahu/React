@@ -125,12 +125,20 @@ export class databaseService{
         }
     }
     //kyuki iska response bohoh fast hai islie no async await or promise
-    getFilePreview(fileID){
-        return this.bucket.getFilePreview(
-            conf.appwriteBucketId,
+getFilePreview(fileID) {
+    try {
+        // Switch from .getFilePreview to .getFileView
+        const view = this.bucket.getFileView(
+            conf.appwriteBucketId, 
             fileID
-        )
+        );
+
+        return view?.href || view; 
+    } catch (error) {
+        console.error("Appwrite getFileView error: ", error);
+        return "";
     }
+}
     
 }
 

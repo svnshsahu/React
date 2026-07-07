@@ -17,7 +17,7 @@ function Select({
                 w-full ${className}`}
             >
                 {options?.map((option) => (
-                    <option kry = {option} value={option }>
+                    <option key = {option} value={option }>
                         {option}
                     </option>
                 ))}

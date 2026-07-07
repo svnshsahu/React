@@ -5,6 +5,7 @@ import authService from "./appwrite/auth"
 import {login , logout} from './store/AuthSlice'
 import Footer from './components/Footer/Footer'
 import Header  from './components/Header/Header'
+import { Outlet } from 'react-router-dom';
 //{} nam mein jb export mein default na ho wo agar default hai toh sirf koi bhi nam bina {} ke
 function App() {
   const [loading , setLoading] = React.useState(true); // ye islie ki agar true hai toh loading ka icon dikhaenge aur agar true nahi hai toh data dikhaenge ye tb use hioga jb database se kuch fetch karna ho 
@@ -35,8 +36,9 @@ function App() {
       <div className='w-full block'>
         <Header/>
         <main>
-          TODO :{/* <Outlet/>  */}
-          <h1>Hellooo</h1>
+          <Outlet/>
+          {/* TODO :{/* <Outlet/>  */}
+          {/* <h1>Hellooo</h1>  */}
         </main>
         <Footer/>
       </div>

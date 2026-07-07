@@ -32,19 +32,21 @@ export class AuthService{
                 else{
                     return userAccount;
                 }
-            }catch(error){
-                console.log(error) //sirf throw error krne mein gadbad ho ja raha 
+            }catch (error) {
+                console.error(error);
+                throw error;
             }
         }
         async login({email , password}){
             try{
-                return await this.account.createEmailSession(email,password);
+                return await this.account.createEmailPasswordSession(email, password);
             }
-            catch(err){
-                console.log(err);
-                
+            catch (error) {
+                console.error(error);
+                throw error;
             }
         }
+
         async getCurrentUser(){ // to check aap login ho ya nahi
             try{
                 return await this.account.get(); //agar isme kuch mila hi nahi tab .. ya toh if else laga lo
