@@ -83,4 +83,4 @@ export default authService
 //under the hood sirf isi file ko pata hai
 // ab kuch bhi appwrite ya firebase bs uske methods change kr dijie kyuki create acc , login ye sb toh wahi rahega
 
-//BUT HA JAB BHI IN FUTURE AAPKO KABHI IS TARIKE KA AUTHENTICATION APPWRITE SE KRNA HOGA TOH IS SNIPPET KO COPY PASTE
+//BUT HA JAB BHI IN FUTURE AAPKO KABHI IS TARIKE KA AUTHENTICATION APPWRITE SE KRNA HOGA TOH IS SNIPPET KO COPY PASTE  
