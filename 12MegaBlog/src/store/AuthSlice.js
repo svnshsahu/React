@@ -10,7 +10,7 @@ const authSlice = createSlice({
     initialState ,
     reducers : {
         login : (state , action) => {
-            state.status = true
+            state.status = true  
             state.userData = action.payload.userData 
         } ,
         logout : (state) => { //hai aapke pas action ka access yaha bhi but use nahi toh nahi likh rhe
